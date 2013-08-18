@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'cumtd'
-  s.version     = '0.1.4'
+  s.version     = '0.1.4.1'
   s.date        = '2013-08-17'
   s.summary     = "CUMTD API wrapper"
   s.description = "An interface to CUMTD's API."
