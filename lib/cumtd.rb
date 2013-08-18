@@ -8,10 +8,13 @@ class CUMTD
 	require 'shape'
 	require 'trip'
 	require 'vehicle'
+	require 'reroute'
 	include HTTParty
 	base_uri 'developer.cumtd.com/api/v2.2/json'
 	def initialize(api_key, stops_file=nil, routes_file=nil, serialize_path=File.expand_path(File.dirname(__FILE__)))
 		@api_key = api_key
+
+		@@all_reroutes = Array.new
 
 		@@all_stops = Array.new
 		if stops_file
@@ -48,6 +51,10 @@ class CUMTD
 		@@all_routes
 	end
 
+	def self.reroutes
+		@@reroutes
+	end
+
 	def serialize_stops(file_location)
 		File.open(file_location, "wb") do |file|
 			YAML.dump(@@all_stops,file)
@@ -80,6 +87,14 @@ class CUMTD
 		@@all_routes.clear
 		response["routes"].each do |route|
 			@@all_routes << Route.new(route)
+		end
+	end
+
+	def get_reroutes
+		response = self.class.get("/GetReroutes?key=#{@api_key}")
+		@@all_reroutes.clear
+		response["reroutes"].each do |reroute|
+			@@all_reroutes << Reroute.new(reroute)
 		end
 	end
 

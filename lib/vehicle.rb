@@ -43,12 +43,17 @@ class Vehicle < CUMTD
 		@last_updated
 	end
 
+	def route
+		@@all_routes.select { |route| route.route_id == self.trip.route_id }
+	end
+
 	def to_json(*a)
 		{
 		'vehicle_id' => @vehicle_id,
 		'lat' => @location[:lat],
 		'lon' => @location[:lon],
-		'trip' => @trip
+		'trip' => @trip,
+		'route' => self.route,
 		}.to_json(*a)
 	end
 	

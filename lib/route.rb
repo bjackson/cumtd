@@ -26,4 +26,14 @@ class Route < CUMTD
 	def route_text_color
 		@route_text_color
 	end
+
+	def to_json(*a)
+		{
+		'route_color' => @route_color,
+		'route_id' => @route_id,
+		'route_long_name' => @route_long_name,
+		'route_short_name' => @route_short_name,
+		'route_text_color' => @route_text_color,
+		}.to_json(*a)
+	end
 end
