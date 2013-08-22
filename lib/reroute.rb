@@ -1,11 +1,12 @@
 class Reroute < CUMTD
 	require 'route'
 
-	attr_accessor :start_date, :end_date, :description, :affected_routes
+	attr_accessor :start_date, :end_date, :description, :affected_routes, :message
 
 	def initialize(json)
-		@start_date = Date.strptime(json["start_date"], "%m/%d/%y")
+		@start_date = Date.strptime(json["start_date"], "%m/%d/%Y")
 		@end_date = Date.strptime(json["end_date"], "%m/%d/%y")
+		@message = json["message"].gsub!("\n",' ')
 		@description = json["description"].gsub!("\n",' ')
 		@affected_routes = Array.new
 		json["affected_routes"].each do |affected_route|

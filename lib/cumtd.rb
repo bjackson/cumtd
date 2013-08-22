@@ -14,7 +14,7 @@ class CUMTD
 	def initialize(api_key, stops_file=nil, routes_file=nil, serialize_path=File.expand_path(File.dirname(__FILE__)))
 		@api_key = api_key
 
-		@@all_reroutes = Array.new
+		@@reroutes = Array.new
 
 		@@all_stops = Array.new
 		if stops_file
@@ -79,7 +79,7 @@ class CUMTD
 		response["stops"].each do |stop|
 			@@all_stops << Stop.new(stop)
 		end
-
+		return @@all_stops
 	end
 
 	def get_routes
@@ -88,14 +88,16 @@ class CUMTD
 		response["routes"].each do |route|
 			@@all_routes << Route.new(route)
 		end
+		return @@all_routes
 	end
 
 	def get_reroutes
 		response = self.class.get("/GetReroutes?key=#{@api_key}")
-		@@all_reroutes.clear
+		@@reroutes.clear
 		response["reroutes"].each do |reroute|
-			@@all_reroutes << Reroute.new(reroute)
-		end
+			@@reroutes << Reroute.new(reroute)
+		end unless response["reroutes"].nil?
+		return @@reroutes
 	end
 
 	def get_stops_by_lat_lon(lat, lon, count=20)
